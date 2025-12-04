@@ -6,26 +6,36 @@ export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    contact: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({}); // <-- error state
+  const [errors, setErrors] = useState({});
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validation function
+  // Validation
   const validateForm = () => {
     let newErrors = {};
 
+    // NAME
     if (!formData.name.trim()) newErrors.name = "Full name is required.";
 
+    // EMAIL
     if (!formData.email.trim()) newErrors.email = "Email is required.";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Enter a valid email.";
 
+    // PHONE NUMBER
+    if (!formData.contact.trim()) newErrors.contact = "Phone number is required.";
+    else if (!/^[0-9]+$/.test(formData.contact))
+      newErrors.contact = "Phone number must contain digits only.";
+    else if (formData.contact.length !== 10)
+      newErrors.contact = "Phone number must be exactly 10 digits.";
+
+    // PASSWORD
     if (!formData.password.trim()) newErrors.password = "Password is required.";
     else if (formData.password.length < 6)
       newErrors.password = "Password must be at least 6 characters.";
@@ -41,8 +51,8 @@ export default function Register() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log("Form valid:", formData);
-      // Call backend API here
+      console.log("Form Valid:", formData);
+      // API call here
     }
   };
 
@@ -97,6 +107,23 @@ export default function Register() {
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
+          {/* PHONE */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700">Phone Number</label>
+            <input
+              type="text"
+              name="contact"
+              onChange={handleChange}
+              placeholder="Enter your phone number"
+              className={`w-full mt-1 p-3 border rounded-lg outline-none 
+                ${errors.contact ? "border-red-500" : "focus:ring-2 focus:ring-[#03519F]"}
+              `}
+            />
+            {errors.contact && (
+              <p className="text-red-500 text-sm mt-1">{errors.contact}</p>
+            )}
+          </div>
+
           {/* PASSWORD */}
           <div>
             <label className="text-sm font-semibold text-gray-700">Password</label>
@@ -109,7 +136,9 @@ export default function Register() {
                 ${errors.password ? "border-red-500" : "focus:ring-2 focus:ring-[#03519F]"}
               `}
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           <button
