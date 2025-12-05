@@ -1,9 +1,8 @@
-const express=require("express")
-const router=express.Router()
-const UserRegistration = require("D:/client/rajenterprise/Backend/controller/UserController.js")
+const express = require("express");
+const router = express.Router();
 
+const userController = require("../controller/UserController");
 
-router.post("/registration",UserRegistration)
+router.post("/registration", userController.UserRegistration);
 
-
-module.exports=router;
+module.exports = router;

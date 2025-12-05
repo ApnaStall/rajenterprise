@@ -1,13 +1,15 @@
 const bcrypt = require("bcryptjs");
-const User=require("D:/client/rajenterprise/Backend/models/User.js")
+const User = require("../models/User");
+
 // Register Route
- const UserRegistration = async (req, res) => {
+const UserRegistration = async (req, res) => {
   try {
     const { name, email, password, contact } = req.body;
 
     // Check if email exists
     const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: "Email already exists" });
+    if (userExists)
+      return res.status(400).json({ message: "Email already exists" });
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -16,16 +18,19 @@ const User=require("D:/client/rajenterprise/Backend/models/User.js")
     const user = new User({
       name,
       contact,
+      email,
       password: hashedPassword,
-      email
     });
 
     await user.save();
     res.status(201).json({ message: "User registered successfully!" });
-
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: "Server error" });
-    console.log(err)
   }
 };
-module.exports=UserRegistration
+
+// EXPORT PROPERLY
+module.exports = {
+  UserRegistration,
+};
