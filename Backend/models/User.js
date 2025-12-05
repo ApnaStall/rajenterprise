@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   contact: { type: String, required: true },     // phone OR email
   password: { type: String, required: true },
+   email:{ type :String,required:true},
   role: { type: String, default: "user" }        // admin or user
 });
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserNurse } from "react-icons/fa";
-
+import axios from 'axios';
 export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
@@ -52,8 +52,14 @@ export default function Register() {
 
     if (Object.keys(validationErrors).length === 0) {
       console.log("Form Valid:", formData);
-      // API call here
+    
     }
+    axios.post("http://localhost:5000/users/registration",{
+        name:formData["name"],
+        email:formData["email"],
+        contact:formData["contact"],
+        password:formData["password"]
+    })
   };
 
   return (
